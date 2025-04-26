@@ -5,7 +5,7 @@ This project demonstrates early-stage physics simulations including rigid body d
 
 ---
 
-## ✨ Features
+##  Features
 
 - Rigid body dynamics (initial flying box)
 - Particle collisions (broad phase + narrow phase)
@@ -16,7 +16,7 @@ This project demonstrates early-stage physics simulations including rigid body d
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 
 1. Make sure you have the dependencies installed (below).
 2. Use the batch files:
@@ -26,7 +26,7 @@ This project demonstrates early-stage physics simulations including rigid body d
 
 ---
 
-## 📚 Dependencies
+##  Dependencies
 
 - **g++** compiler (MinGW-w64 recommended)
 - **GLFW 3.4** (precompiled binaries)
@@ -36,7 +36,7 @@ This project demonstrates early-stage physics simulations including rigid body d
 
 ---
 
-# 📂 Simulations
+#  Simulations
 
 ## 🛩️ Flying Dutchman — Rigid Body Flying Box
 
