@@ -20,8 +20,9 @@ This project demonstrates early-stage physics simulations including rigid body d
 
 1. Make sure you have the dependencies installed (below).
 2. Use the batch files:
-   - `run_main2.bat` → Runs the collision particle visualizer
-   - `run_main3.bat` → Runs the spring, constraint, and force demonstrations
+   - `main2collide.bat` → Runs the collision particle visualizer
+   - `run_particle.bat` → Runs the spring, constraint, and force demonstrations
+   - and a couple others..
 3. Batch files automatically compile and launch the simulations.
 
 ---
