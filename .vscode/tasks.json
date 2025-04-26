@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "build GLFW project",
+        "type": "shell",
+        "command": "g++",
+        "args": [
+          "main.cpp",
+          "-IC:/glfw-3.4.bin.WIN64/include",
+          "-LC:/glfw-3.4.bin.WIN64/lib-mingw-w64",
+          "-lglfw3",
+          "-lopengl32",
+          "-lgdi32",
+          "-o",
+          "ParticleSim.exe"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$gcc"]
+      }
+    ]
+  }
+  
