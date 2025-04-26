@@ -45,8 +45,8 @@ int main() {
     ImGui_ImplOpenGL3_Init("#version 130");
 
     static float pointSize = 5.0f;
-    bool enableGravity = false, enableDamping = true, enableSprings = false, enableMutualGravity = true;
-    bool enableAnchoredSprings = false, enableBuoyancy = false, enableCollisions = true;
+    bool enableGravity = false, enableDamping = true, enableSprings = true, enableMutualGravity = true;
+    bool enableAnchoredSprings = true, enableBuoyancy = false, enableCollisions = true;
     bool flashOnCollision = true, enableRandomVelocity = false;
     float timeStep = 0.01f;
     int boxSize = 3;
