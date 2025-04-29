@@ -20,12 +20,15 @@ public:
     real inverseMass;
     real linearDamping;
     real angularDamping;
+    real boundingRadius; 
 
     Vector3 forceAccum;
     Vector3 torqueAccum;
     Vector3 acceleration;
     Vector3 lastFrameAcceleration;
 
+    bool isAwake = true;
+    
     void calculateDerivedData();
     void integrate(real duration);
     void setMass(real mass);
