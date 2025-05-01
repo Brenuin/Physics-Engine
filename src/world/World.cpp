@@ -23,7 +23,7 @@ void World::update(real duration) {
     contactsUsed = 0;
 
     // Generate contacts
-    generateContacts();
+    generateContacts(duration);
 
     // Resolve contacts
     if (contactsUsed > 0) {
@@ -34,7 +34,7 @@ void World::update(real duration) {
     integrateBodies(duration);
 }
 
-void World::generateContacts() {
+void World::generateContacts(real duration) {
     contactsUsed = 0;
 
     // Simple all-pairs collision check
@@ -46,16 +46,24 @@ void World::generateContacts() {
             RigidBody* bodyB = bodies[j];
 
             // For now: assume sphere bounding volumes
-            BoundingSphere sphereA(bodyA->position, 1.0f);
-            BoundingSphere sphereB(bodyB->position, 1.0f);
+            BoundingSphere sphereA(bodyA->position, bodyA->boundingRadius);
+            BoundingSphere sphereB(bodyB->position, bodyB->boundingRadius);
 
 
-            contactsUsed += CollisionDetector::sphereAndSphere(
+            unsigned added = CollisionDetector::sphereAndSphere(
                 bodyA, sphereA.radius,
                 bodyB, sphereB.radius,
                 &contacts[contactsUsed],
                 maxContacts - contactsUsed
             );
+            
+            if (added > 0) {
+                contacts[contactsUsed].calculateInternals(duration); 
+            }
+            
+            contactsUsed += added;
+            
+            
         }
     }
 }

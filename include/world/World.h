@@ -31,7 +31,8 @@ public:
 
 private:
     // Detect all collisions between bodies
-    void generateContacts();
+    void generateContacts(real duration);
+
 
     // Integrate all bodies
     void integrateBodies(real duration);

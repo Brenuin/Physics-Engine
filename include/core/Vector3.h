@@ -107,7 +107,10 @@ namespace tachyon {
         real operator *(const Vector3 &vector) const{
             return x*vector.x + y*vector.y + z*vector.z;
         }
-
+        Vector3 operator/(const real value) const {
+            return Vector3(x / value, y / value, z / value);
+        }
+        
         Vector3 vectorProduct(const Vector3 &vector) const{
             return Vector3(y*vector.z-z*vector.y, z*vector.x-x*vector.z, x*vector.y-y*vector.x);
         }

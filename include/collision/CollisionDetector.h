@@ -31,7 +31,7 @@ public:
         contact->penetration = (radiusOne + radiusTwo) - size;
         contact->body[0] = one;
         contact->body[1] = two;
-        contact->restitution = 0.7f; // 🔥 ADD THIS LINE
+        contact->restitution = 1.0f; // 🔥 ADD THIS LINE
 
         return 1;
     }

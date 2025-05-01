@@ -1,6 +1,6 @@
 @echo off
 echo ===============================
-echo Compiling Main4 (RigidBodyContactBHV World) with MinGW
+echo Compiling main4 with GLFW
 echo ===============================
 
 g++ ^
@@ -8,14 +8,18 @@ g++ ^
  src\rigid\RigidBody.cpp ^
  src\rigid\RigidBodyContact.cpp ^
  src\world\World.cpp ^
+ src\render\Renderer.cpp ^
  src\collision\ContactResolver.cpp ^
- -o build\RigidBodyContactBHV.exe ^
+ -o build\main4.exe ^
  -Iinclude ^
  -Iinclude\core ^
  -Iinclude\rigid ^
- -Iinclude\collision ^
+ -Iinclude\world ^
  -Iinclude\render ^
- -Isrc
+ -IC:\glfw-3.4.bin.WIN64\include ^
+ -LC:\glfw-3.4.bin.WIN64\lib-mingw-w64 ^
+ -lglfw3 -lopengl32 -lgdi32 ^
+ -std=c++17
 
 if errorlevel 1 (
     echo.
@@ -25,12 +29,10 @@ if errorlevel 1 (
 )
 
 echo ✅ Compilation successful.
-
 echo.
-echo 🚀 Launching RigidBodyContactBHV.exe...
-echo ===============================
-build\RigidBodyContactBHV.exe
-
+echo Copying glfw3.dll...
+copy /Y C:\glfw-3.4.bin.WIN64\lib-mingw-w64\glfw3.dll build\ >nul
 echo.
-echo Program finished.
+echo 🚀 Launching main4.exe...
+build\main4.exe
 pause

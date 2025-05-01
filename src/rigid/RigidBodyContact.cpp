@@ -29,8 +29,10 @@ void RigidBodyContact::calculateInternals(real duration) {
 
     contactVelocity = calculateLocalVelocity(0, duration);
     if (body[1]) {
+        // Subtract body 1's velocity to get relative motion in contact space
         contactVelocity -= calculateLocalVelocity(1, duration);
     }
+
 
     calculateDesiredDeltaVelocity(duration);
 }
@@ -95,8 +97,9 @@ Vector3 RigidBodyContact::calculateLocalVelocity(unsigned bodyIndex, real durati
 }
 
 void RigidBodyContact::calculateDesiredDeltaVelocity(real duration) {
-    const static real velocityLimit = 0.25f;
+    const static real velocityLimit = 0.01f;  // Only disable bounce at *very low* speeds
 
+    // Calculate the velocity induced by the acceleration
     real velocityFromAcc = 0;
     if (body[0]->isAwake) {
         velocityFromAcc += (body[0]->lastFrameAcceleration * duration) * contactNormal;
@@ -105,21 +108,23 @@ void RigidBodyContact::calculateDesiredDeltaVelocity(real duration) {
         velocityFromAcc -= (body[1]->lastFrameAcceleration * duration) * contactNormal;
     }
 
+    real sepVel = contactVelocity.x;
+
     real thisRestitution = restitution;
-    if (std::fabs(contactVelocity.x) < velocityLimit) {
+
+    // Kill bounce only if both:
+    // - sepVel is tiny (almost resting)
+    // - and they're not accelerating away due to gravity or force
+    if (std::fabs(sepVel) < velocityLimit && std::fabs(velocityFromAcc) < velocityLimit) {
         thisRestitution = 0.0f;
     }
 
-    desiredDeltaVelocity = -contactVelocity.x - thisRestitution * (contactVelocity.x - velocityFromAcc);
+    desiredDeltaVelocity = -sepVel - thisRestitution * (sepVel - velocityFromAcc);
 }
 
 void RigidBodyContact::resolve(real duration) {
-    std::cout << "Resolve called!!" << std::endl;
+    if (penetration < 0.001f && std::fabs(desiredDeltaVelocity) < 0.01f) return;
 
-    // 🛠 DEBUG PRINT
-    std::cout << "=== Inside Contact::resolve ===" << std::endl;
-    std::cout << "Penetration: " << penetration << std::endl;
-    std::cout << "Contact Normal: (" << contactNormal.x << ", " << contactNormal.y << ", " << contactNormal.z << ")" << std::endl;
 
     calculateInternals(duration);
 
@@ -136,28 +141,33 @@ void RigidBodyContact::resolve(real duration) {
 
 
 void RigidBodyContact::applyVelocityChange(Vector3 velocityChange[2], Vector3 rotationChange[2]) {
-    // Inverse mass sums
     real totalInverseMass = body[0]->inverseMass;
     if (body[1]) totalInverseMass += body[1]->inverseMass;
-
-    // No impulse if both bodies have infinite mass
     if (totalInverseMass <= 0.0f) return;
 
-    // Calculate impulse scalar
     real impulseScalar = desiredDeltaVelocity / totalInverseMass;
-
-    // Final impulse in world space
+    if (std::fabs(impulseScalar) < 0.001f) impulseScalar = 0;
     Vector3 impulse = contactNormal * impulseScalar;
 
-    // Apply impulse to each body
+    // BODY 0
     velocityChange[0] = impulse * body[0]->inverseMass;
     body[0]->velocity += velocityChange[0];
+    Vector3 impulsiveTorque0 = relativeContactPosition[0] % impulse;
+    Vector3 angularDelta0 = body[0]->inverseInertiaTensorWorld * impulsiveTorque0;
+    rotationChange[0] = angularDelta0;
+    body[0]->rotation += angularDelta0;
 
+    // BODY 1
     if (body[1]) {
         velocityChange[1] = impulse * -body[1]->inverseMass;
         body[1]->velocity += velocityChange[1];
+        Vector3 impulsiveTorque1 = relativeContactPosition[1] % (-impulse);
+        Vector3 angularDelta1 = body[1]->inverseInertiaTensorWorld * impulsiveTorque1;
+        rotationChange[1] = angularDelta1;
+        body[1]->rotation += angularDelta1;
     }
 }
+
 
 
 void RigidBodyContact::applyPositionChange(Vector3 linearChange[2], Vector3 angularChange[2], real penetration) {
@@ -166,16 +176,30 @@ void RigidBodyContact::applyPositionChange(Vector3 linearChange[2], Vector3 angu
 
     if (totalInverseMass <= 0.0f) return;
 
-    // Move the objects apart proportionally to their inverse mass
-    Vector3 movePerIMass = contactNormal * (penetration / totalInverseMass);
+    // Allow a tiny overlap before correcting
+    real penetrationSlop = 0.001f;
+    real correctionPercent = 1.0f;  // Only fix 20% of penetration per frame
+    real allowedPenetration = -std::max(penetration - penetrationSlop, 0.0f);
 
-    linearChange[0] = movePerIMass * body[0]->inverseMass;
+    // ✨ Correct vector with percent applied ✨
+    Vector3 correction = contactNormal * (allowedPenetration * correctionPercent / totalInverseMass);
+
+    linearChange[0] = correction * body[0]->inverseMass;
+    std::cout << "  BEFORE pos0: " << body[0]->position.x << "\n";
     body[0]->position += linearChange[0];
+    std::cout << "  AFTER  pos0: " << body[0]->position.x << "\n";
+
 
     if (body[1]) {
-        linearChange[1] = movePerIMass * -body[1]->inverseMass;
+        linearChange[1] = correction * -body[1]->inverseMass;
         body[1]->position += linearChange[1];
     }
+    std::cout << "[PositionChange] penetration: " << penetration
+          << " allowed: " << allowedPenetration
+          << " correctionPercent: " << correctionPercent
+          << " correction: (" << correction.x << ", " << correction.y << ", " << correction.z << ")\n";
+
 }
+
 
 } // namespace tachyon

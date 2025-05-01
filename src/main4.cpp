@@ -1,39 +1,45 @@
+#include <GLFW/glfw3.h>
 #include "world/World.h"
 #include "render/Renderer.h"
-#include "rigid/RigidBody.h"
+#include "systems/BoundingBoxCollider.h"
+#include "systems/BallSpawner.h"
 
 using namespace tachyon;
 
 int main() {
-    World world(256, 10);
-    Renderer renderer;
+    if (!glfwInit()) return -1;
 
-    // Create bodies...
-    RigidBody* bodyA = new RigidBody();
-    bodyA->position = Vector3(0.0f, 0.0f, 0.0f);
-    bodyA->velocity = Vector3(1.0f, 0.0f, 0.0f);
-    bodyA->inverseMass = 1.0f;
-    bodyA->isAwake = true;
-    bodyA->boundingRadius = 1.0f;
-    bodyA->acceleration = Vector3(0.0f, -9.8f, 0.0f);
-    world.addBody(bodyA);
+    GLFWwindow* window = glfwCreateWindow(1200, 900, "RigidBody World", NULL, NULL);
+    BoundingBoxCollider bounds(1200, 900, 30.0f);
 
-    RigidBody* bodyB = new RigidBody();
-    bodyB->position = Vector3(1.5f, 0.0f, 0.0f);
-    bodyB->velocity = Vector3(-1.0f, 0.0f, 0.0f);
-    bodyB->inverseMass = 1.0f;
-    bodyB->isAwake = true;
-    bodyB->boundingRadius = 1.0f;
-    bodyB->acceleration = Vector3(0.0f, -9.8f, 0.0f);
-    world.addBody(bodyB);
+    if (!window) {
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
 
-    real duration = 0.016f; // 60 FPS
+    World world(256, 50);
 
-    // 🚀 Main simulation loop
-    for (int frame = 0; frame < 300; ++frame) {  // Simulate ~5 seconds
-        world.update(duration);
-        renderer.render(world);
+    BallSpawner2D spawner(30.0f, 22.5f, 0.5f, 5.0f, 10.0f, 500.0f);  // width, height, minR, maxR, minV, maxV
+    std::vector<RigidBody*> balls = spawner.spawnBalls(20);
+    for (RigidBody* b : balls) {
+        world.addBody(b);
     }
 
+    Renderer renderer(1200, 900, 30.0f);
+    renderer.setCameraOffset(Vector3(0, 0, 0));
+
+    const real duration = 0.0008f;
+
+    while (!glfwWindowShouldClose(window)) {
+        world.update(duration);
+        bounds.constrainBodies(world.bodies);
+        renderer.beginFrame();
+        renderer.renderWorld(world.bodies);
+        renderer.endFrame(window);
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
     return 0;
 }
