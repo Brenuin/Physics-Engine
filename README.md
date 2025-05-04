@@ -2,7 +2,9 @@
 
 A lightweight C++ physics engine built from scratch, based on concepts from Ian Millington’s *Game Physics Engine Development*.  
 This project demonstrates early-stage physics simulations including rigid body dynamics, collision resolution, and particle systems.
-
+<div align="center">
+  <img src="gif/Collision.gif" width="600"/>
+</div>
 ---
 
 ##  Features
