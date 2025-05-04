@@ -1,0 +1,6 @@
+C:\Users\skyle\physics\src\main4.cpp;C:\Users\skyle\physics\build\main4.dir\Debug\main4.obj
+C:\Users\skyle\physics\src\rigid\RigidBody.cpp;C:\Users\skyle\physics\build\main4.dir\Debug\RigidBody.obj
+C:\Users\skyle\physics\src\rigid\RigidBodyContact.cpp;C:\Users\skyle\physics\build\main4.dir\Debug\RigidBodyContact.obj
+C:\Users\skyle\physics\src\world\World.cpp;C:\Users\skyle\physics\build\main4.dir\Debug\World.obj
+C:\Users\skyle\physics\src\render\Renderer.cpp;C:\Users\skyle\physics\build\main4.dir\Debug\Renderer.obj
+C:\Users\skyle\physics\src\collision\ContactResolver.cpp;C:\Users\skyle\physics\build\main4.dir\Debug\ContactResolver.obj

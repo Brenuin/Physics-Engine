@@ -1,0 +1,3 @@
+C:/Users/skyle/physics/build/CMakeFiles/main4.dir
+C:/Users/skyle/physics/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/skyle/physics/build/CMakeFiles/ZERO_CHECK.dir

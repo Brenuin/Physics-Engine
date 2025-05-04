@@ -9,7 +9,7 @@ class Matrix4 {
 public:
     real data[12];
 
-    Matrix4() { std::fill(data, data + 12, 0); }
+    Matrix4() { std::fill(data, data + 12, 0.0f); }
 
     Vector3 operator*(const Vector3 &vector) const {
         return {

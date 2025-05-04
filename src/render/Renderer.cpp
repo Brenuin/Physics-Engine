@@ -27,7 +27,7 @@ void Renderer::beginFrame() {
 void Renderer::renderWorld(const std::vector<RigidBody*>& bodies) {
     for (RigidBody* body : bodies) {
         drawRigidBody(body);
-        drawAngularVelocityVector(body); // <-- Can be commented out easily
+        //drawAngularVelocityVector(body); // <-- Can be commented out easily
     }
 }
 

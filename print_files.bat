@@ -13,23 +13,23 @@ set PRINT_BoundingSphere=true
 set PRINT_BVHNode=false
 set PRINT_Matrix3=false
 set PRINT_Matrix4=false
-set PRINT_quaternion=false
+set PRINT_quaternion=true
 set PRINT_globals=false
-set PRINT_percision=false
+set PRINT_percision=true
 
 :: Collision
-set PRINT_CollisionDetector=true
-set PRINT_ContactResolver=true
+set PRINT_CollisionDetector=false
+set PRINT_ContactResolver=false
 
 :: Rigid
-set PRINT_RigidBody=true
-set PRINT_RigidBodyContact=true
+set PRINT_RigidBody=false
+set PRINT_RigidBodyContact=false
 
 :: Render
 set PRINT_Renderer=false
 
 :: World
-set PRINT_World=true
+set PRINT_World=false
 
 :: Particles
 set PRINT_Particle=false
@@ -39,7 +39,7 @@ set PRINT_particle_pair_registry=false
 
 :: Systems
 set PRINT_BallSpawner=true
-set PRINT_BoundingBoxCollider=true
+set PRINT_BoundingBoxCollider=false
 set PRINT_Aero=false
 set PRINT_AeroControl=false
 set PRINT_collision=false
@@ -53,9 +53,9 @@ set PRINT_RigidBodyForceGenerator=false
 set PRINT_RigidBodyForceRegistry=false
 
 :: Constraints
-set PRINT_ParticleCable=true
-set PRINT_ParticleRod=true
-set PRINT_ParticleLink=true
+set PRINT_ParticleCable=false
+set PRINT_ParticleRod=false
+set PRINT_ParticleLink=false
 
 :: ---- END FLAGS ----
 

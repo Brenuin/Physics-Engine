@@ -1,0 +1,10 @@
+^C:\USERS\SKYLE\PHYSICS\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/skyle/physics -BC:/Users/skyle/physics/build --check-stamp-file C:/Users/skyle/physics/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

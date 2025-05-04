@@ -1,0 +1,10 @@
+^C:\USERS\SKYLE\PHYSICS\BUILD\CMAKEFILES\54D51AEF58A3F029A735D07E16000382\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/skyle/physics -BC:/Users/skyle/physics/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/skyle/physics/build/physics_engine.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
